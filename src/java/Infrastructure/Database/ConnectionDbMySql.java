@@ -3,7 +3,7 @@ package Infrastructure.Database;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.DriverManager;
-import org.apache.tomcat.dbcp.dbcp2.SQLExceptionList;
+
 
 public class ConnectionDbMySql {
 
