@@ -35,10 +35,91 @@ public class UserCRUD {
                 );
 
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userList; 
+        return userList;
     }
 
+    //metodo para agregar usuarios neuvos
+    public void addUser(User user) throws SQLException, DuplicateUserException {
+        String query = "INSERT INTO Users (codigo, password, nombre, email) VALUES (? , ?, ?, ?) ";
+        try (Connection con = ConnectionDbMySql.getConnection(); PreparedStatement stmt = con.prepareStatement(query)) {
+
+            stmt.setString(1, user.getCodigo());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getNombre());
+            stmt.setString(4, user.getEmail());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            //Excepcion para posibles claves deplicadas
+            if (e.getErrorCode() == 1062) {
+                throw new DuplicateUserException("EL usuarion con este codigo y/o email ya extiste en la base de datos");
+            } else {
+                throw e; //Propagamos la excepcion de SQLException
+            }
+        }
+    }
+
+    //Creamos el metodo para eliminar un usuario
+    public void deleteUser(String codigo) throws SQLException, UserNotFoundException {
+        String query = "DELETE FROM Users WHERE codigo = ?";
+
+        try (Connection con = ConnectionDbMySql.getConnection(); PreparedStatement stmt = con.prepareStatement(query)) {
+
+            stmt.setString(1, codigo);
+
+            int rowAffected = stmt.executeUpdate();
+            if (rowAffected == 0) {
+                throw new UserNotFoundException("El usuario con el codigo:" + codigo + "no existe en la base de datos");
+            }
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    //Metodo para actualizar un usuario
+    public void updateUser(User user) throws SQLException, UserNotFoundException {
+        String query = "UPDATE Users SET codigo= ?, password = ?, nombre = ?, email = ?";
+
+        try (Connection con = ConnectionDbMySql.getConnection(); PreparedStatement stmt = con.prepareStatement(query)) {
+
+            stmt.setString(1, user.getCodigo());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getNombre());
+            stmt.setString(4, user.getEmail());
+
+            int rowAffected = stmt.executeUpdate();
+            if (rowAffected == 0) {
+                throw new UserNotFoundException("El usuario con el codigo " + user.getCodigo() + "No existe");
+            }
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    //Metodo para obtener un usuario por su codigo 
+    public User getUserByCode(String codigo) throws SQLException, UserNotFoundException {
+        String query = "SELECT * FROM Users WHERE codigo = ?";
+        User user = null;
+
+        try (Connection con = ConnectionDbMySql.getConnection(); PreparedStatement stmt = con.prepareStatement(query)) {
+
+            stmt.setString(1, codigo);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User(rs.getString("codigo"), rs.getString("password"), rs.getString("nombre"), rs.getString("email"));
+            } else {
+                throw new UserNotFoundException("El usuario con  el codigo: " + codigo + "no existe");
+            }
+        } catch (SQLException e) {
+            throw e;
+
+        }
+        return user;
+    }
+    
+    
 }
