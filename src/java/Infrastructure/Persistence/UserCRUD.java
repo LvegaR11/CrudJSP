@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class UserCRUD {
 
-    //Metodo para obener todos los usiarios
+    // Metodo para obener todos los usiarios
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String query = "SELECT * FROM Users";
@@ -31,8 +31,7 @@ public class UserCRUD {
                                 rs.getString("codigo"),
                                 rs.getString("password"),
                                 rs.getString("nombre"),
-                                rs.getString("email"))
-                );
+                                rs.getString("email")));
 
             }
         } catch (SQLException e) {
@@ -41,7 +40,7 @@ public class UserCRUD {
         return userList;
     }
 
-    //metodo para agregar usuarios neuvos
+    // metodo para agregar usuarios nuevos
     public void addUser(User user) throws SQLException, DuplicateUserException {
         String query = "INSERT INTO Users (codigo, password, nombre, email) VALUES (? , ?, ?, ?) ";
         try (Connection con = ConnectionDbMySql.getConnection(); PreparedStatement stmt = con.prepareStatement(query)) {
@@ -53,16 +52,17 @@ public class UserCRUD {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            //Excepcion para posibles claves deplicadas
+            // Excepcion para posibles claves deplicadas
             if (e.getErrorCode() == 1062) {
-                throw new DuplicateUserException("EL usuarion con este codigo y/o email ya extiste en la base de datos");
+                throw new DuplicateUserException(
+                        "EL usuarion con este codigo y/o email ya extiste en la base de datos");
             } else {
-                throw e; //Propagamos la excepcion de SQLException
+                throw e; // Propagamos la excepcion de SQLException
             }
         }
     }
 
-    //Creamos el metodo para eliminar un usuario
+    // Creamos el metodo para eliminar un usuario
     public void deleteUser(String codigo) throws SQLException, UserNotFoundException {
         String query = "DELETE FROM Users WHERE codigo = ?";
 
@@ -79,7 +79,7 @@ public class UserCRUD {
         }
     }
 
-    //Metodo para actualizar un usuario
+    // Metodo para actualizar un usuario
     public void updateUser(User user) throws SQLException, UserNotFoundException {
         String query = "UPDATE Users SET codigo= ?, password = ?, nombre = ?, email = ?";
 
@@ -99,7 +99,7 @@ public class UserCRUD {
         }
     }
 
-    //Metodo para obtener un usuario por su codigo 
+    // Metodo para obtener un usuario por su codigo
     public User getUserByCode(String codigo) throws SQLException, UserNotFoundException {
         String query = "SELECT * FROM Users WHERE codigo = ?";
         User user = null;
@@ -110,7 +110,8 @@ public class UserCRUD {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                user = new User(rs.getString("codigo"), rs.getString("password"), rs.getString("nombre"), rs.getString("email"));
+                user = new User(rs.getString("codigo"), rs.getString("password"), rs.getString("nombre"),
+                        rs.getString("email"));
             } else {
                 throw new UserNotFoundException("El usuario con  el codigo: " + codigo + "no existe");
             }
@@ -120,6 +121,88 @@ public class UserCRUD {
         }
         return user;
     }
-    
-    
+
+    // Metodo para autenticar un usuario por email y contraseña (Login)
+    public User getUserByEmailAndPassword(String email, String password) throws SQLException, UserNotFoundException {
+        User user = null;
+        String query = "SELECT * FROM Users WHERE email = ? AND password = ?";
+
+        try {
+            Connection con = ConnectionDbMySql.getConnection();
+            PreparedStatement stmt = con.prepareStatement(query);
+
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User(
+                        rs.getString("codigo"),
+                        rs.getString("password"),
+                        rs.getString("nombre"),
+                        rs.getString("email")
+
+                );
+            } else {
+                var message = "Los datos ingresados son incorrecto. El usuario no existe";
+                throw new UserNotFoundException(message);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ;
+        }
+        return user;
+    }
+
+    // Metodo para Obtener un usuario por medio de su email
+    public User getUserByEmail(String email) throws SQLException, UserNotFoundException {
+        User user = null;
+        String query = "SELECT * FROM Users WHERE email = ?";
+        try (Connection con = ConnectionDbMySql.getConnection(); PreparedStatement stmt = con.prepareStatement(query)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User(
+                        rs.getString("codigo"),
+                        rs.getString("password"),
+                        rs.getString("nombre"),
+                        rs.getString("email"));
+            } else {
+                throw new UserNotFoundException("El usuario con el email: " + email + " no existe");
+            }
+        }
+        return user;
+    }
+
+    // Metodo para buscar un usuario por nombre o email
+    public List<User> searchUsers(String searchtTerm) {
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT * FROM Users "
+                + "WHERE nombre LIKE ? OR email LIKE ?";
+        try {
+            Connection con = ConnectionDbMySql.getConnection();
+            PreparedStatement stmt = con.prepareStatement(query);
+
+            stmt.setString(1, "%" + searchtTerm + "%");
+            stmt.setString(2, "%" + searchtTerm + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                userList.add(
+                        new User(
+                                rs.getString("codigo"),
+                                rs.getString("password"),
+                                rs.getString("nombre"),
+                                rs.getString("email")));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
 }
