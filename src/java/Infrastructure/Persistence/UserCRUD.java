@@ -149,7 +149,7 @@ public class UserCRUD {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            ;
+            
         }
         return user;
     }

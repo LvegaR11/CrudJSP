@@ -28,7 +28,7 @@ public class UserService {
     public void createUser(String codigo, String password, String nombre, String email)
             throws DuplicateUserException, SQLException {
         User user = new User(codigo, password, nombre, email);
-        userCrud.addUser(user);
+        userCrud.addUser(user);  
     }
 
     //Metodo para actualizar usuarios 
