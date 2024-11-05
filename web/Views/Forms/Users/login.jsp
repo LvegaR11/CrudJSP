@@ -4,14 +4,32 @@
     Author     : LUIS VEGA
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Iniciar sesión</h1>
+
+        <%--Mesaje de error en casoa de que el usuario ingrese las credenciales incorrectas--%>
+        <%-- if (request.getAttribute("errorMessage") != null) { --%>
+            <p style="color: red;"><$=request.getAttribute("errorMessage")$></p>
+            <%-- } --%>
+
+            <%-- Formulario de login --%>
+            <form action="<%= request.getContestPath() %>/Controllers/UserController.jsp?action=authenticate" method="post">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required> <br> <br>
+               
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                
+                <input type="submit" value="Ingresar">
+            </form>
+
+            <br>
+            <a href="<%= request.getContextPath()%>/index.jsp">Volver a la página de inicio</a>
     </body>
 </html>
