@@ -15,13 +15,13 @@
         <h1>Lisa de Todos los Usuarios</h1>
 
         <%-- Mesaje de error o éxito --%>
-        <%-- if (request.getAttribute("errorMessage") != null) { --%>
+        <%if (request.getAttribute("errorMessage") != null) {%>
             <p style="color: red;"><%= request.getAttribute("errorMessage") %></p>
-        <%-- } --%>
+        <% } %>
 
-        <%-- if (request.getAttribute("successMessage") != null) { --%>
+        <%if (request.getAttribute("successMessage") != null) { %>
             <p style="color: green;"><%= request.getAttribute("successMessage") %></p>
-        <%-- } --%>
+        <% }%>
 
         <%-- Tabla para mostar la lista de usuarios --%>
         <table border="1">

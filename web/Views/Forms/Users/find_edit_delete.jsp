@@ -35,20 +35,20 @@
         </script>
 
     </head>
-    <body window.onload="<%= (session.getAttribute("action") != null) ? "enablebuttons()" : "disablebuttons()" %>">
+    <body onload="<%= (session.getAttribute("searchedUser") != null) ? "enableButtons()" : "disableButtons()" %>">
         <h1>Buscar, Editar o Eliminar Usuario</h1>
 
         <%-- Mensaje de error o éxito --%>
-        <%-- if (request.getAttribute("errorMessage") != null) { --%>
+        <%if (request.getAttribute("errorMessage") != null) {%>
             <p style="color: red;"><%= request.getAttribute("errorMessage") %></p>
-        <%-- } --%>
+        <% } %>
 
-        <%-- if (request.getAttribute("successMessage") != null) { --%>
+        <%if (request.getAttribute("successMessage") != null) { %>
             <p style="color: green;"><%= request.getAttribute("successMessage") %></p>
-        <%-- } --%>
+        <% } %>
 
         <%-- Formulario pra buscar editar y eliminra --%>
-        <from id="userForm" action = <%= request.getContextPath() %>/Controllers/UserController.jsp" method="post">
+        <from id="userForm" action = "<%= request.getContextPath() %>/Controllers/UserController.jsp" method="post">
               <!-- El valor cambiará dinamicamente  -->
               <input type="hidden" id="actionInput" name="action" value="search">
               

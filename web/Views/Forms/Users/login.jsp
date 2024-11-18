@@ -14,12 +14,12 @@
         <h1>Iniciar sesión</h1>
 
         <%--Mesaje de error en casoa de que el usuario ingrese las credenciales incorrectas--%>
-        <%-- if (request.getAttribute("errorMessage") != null) { --%>
-            <p style="color: red;"><$=request.getAttribute("errorMessage")$></p>
-            <%-- } --%>
+        <%if (request.getAttribute("errorMessage") != null) {%>
+            <p style="color: red;"><%=request.getAttribute("errorMessage")%></p>
+            <% }%>
 
             <%-- Formulario de login --%>
-            <form action="<%= request.getContestPath() %>/Controllers/UserController.jsp?action=authenticate" method="post">
+            <form action="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=authenticate" method="post">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required> <br> <br>
                

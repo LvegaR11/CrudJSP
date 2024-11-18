@@ -15,9 +15,9 @@
         <h1>Agregar usuario</h1>
 
         <%-- Mesaje de error o éxito --%>
-        <%-- if (request.getAttribute("message") != null) { --%>
+        <%if (request.getAttribute("message") != null) {%>
             <p style="color: red;"><$=request.getAttribute("message")$></p>
-            <%-- } --%>
+            <% } %>
 
         <%-- Formulario de agregar usuario --%>
         <form action="<%= request.getContestPath() %>/Controllers/UserController.jsp?action=createUser" method="post">
