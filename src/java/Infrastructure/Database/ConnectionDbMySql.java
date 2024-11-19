@@ -10,7 +10,7 @@ public class ConnectionDbMySql {
     private static final String URL = "jdbc:mysql://localhost:3306/CrudJSP";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
-    private static final String DRIVER = "con.mysql.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     //Método que devuelve una conexion a la base de datos 
     public static Connection getConnection() throws SQLException {

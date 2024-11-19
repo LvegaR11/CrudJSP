@@ -4,40 +4,51 @@
     Author     : LUIS VEGA
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        
-        <title>Agregar usuario</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Agregar Usuario</title>
     </head>
     <body>
-        <h1>Agregar usuario</h1>
+        <h1>Agregar Usuario</h1>
 
-        <%-- Mesaje de error o éxito --%>
-        <%if (request.getAttribute("message") != null) {%>
-            <p style="color: red;"><$=request.getAttribute("message")$></p>
-            <% } %>
+        <%-- Mensaje de error o de éxito --%>
+        <% if (request.getAttribute("errorMessage") != null) { %>
+            <p style="color:red"><%= request.getAttribute("errorMessage") %></p>
+        <% } else if (request.getAttribute("successMessage") != null) { %>
+            <p style="color:green"><%= request.getAttribute("successMessage") %></p>
+        <% } %>
 
-        <%-- Formulario de agregar usuario --%>
-        <form action="<%= request.getContestPath() %>/Controllers/UserController.jsp?action=createUser" method="post">
-            <label for="codigo">Código:</label>
-            <input type="text" id="codigo" name="codigo" required> <br> <br>
-            
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required> <br> <br>
-            
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required> <br> <br>
-            
+        <%-- Formulario de creación de usuario --%>
+        <form action="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=create" method="post">
+           
+            <label for="name">Nombre:</label>
+            <input type="text" name="name" id="name" required>
+            <br><br>
+            <label for="last_name">Apellido:</label>
+            <input type="text" name="last_name" id="last_name" required>
+            <br><br>
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required> <br> <br>
-            
-            <input type="submit" value="Agregar usuario">
-
+            <input type="text" name="email" id="email" required>
+            <br><br>
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" id="password" required>
+            <br><br>
+            <label for="role">Rol:</label>
+            <input type="text" name="role" id="role" required>
+            <br><br>
+            <label for="phone">Teléfono:</label>
+            <input type="text" name="phone" id="phone" required>
+            <br><br>
+            <label for="status">Estado:</label>
+            <input type="text" name="status" id="status" required>
+            <br><br>
+            <input type="submit" value="Agregar Usuario">
         </form>
 
         <br>
-        <a href="<%= request.getContextPath()%>/index.jsp">Volver a la página de inicio</a>
+        <a href="<%= request.getContextPath() %>/index.jsp">Menú Principal</a>
     </body>
 </html>

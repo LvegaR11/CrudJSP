@@ -1,0 +1,157 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 18/11/2024, 9:48:11 p. m.
+    Author     : LUIS VEGA
+*/
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor del formulario */
+form {
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Estilo de etiquetas */
+label {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Estilo de campos de entrada */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Estilo del botón de envío */
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Mensaje de error */
+p {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Estilo del enlace */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+}
+/* Mensajes de inicio de sesión */
+h3 {
+    color: #333;
+    text-align: center;
+    font-weight: normal;
+}
+
+/* Enlaces principales */
+a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+a:hover {
+    background-color: #4a90e2;
+    color: #fff;
+}
+
+/* Lista de enlaces */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    text-align: center;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+/* Enlaces dentro de la lista */
+ul li a {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+ul li a:hover {
+    background-color: #357ABD;
+}
+
+/* Botón de cierre de sesión */
+a[href*="logout"] {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    background-color: #f44336;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 10px 20px;
+    width: fit-content;
+}
+
+a[href*="logout"]:hover {
+    background-color: #d32f2f;
+}

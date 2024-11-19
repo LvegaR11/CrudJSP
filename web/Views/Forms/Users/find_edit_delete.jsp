@@ -4,103 +4,97 @@
     Author     : LUIS VEGA
 --%>
 
+<%@page import="Domain.Model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Buscar, Editar o Eliminar Usuario</title>
         <script>
-            //Funcion: Habilitar botones, Editar y eliminar
-            function enablebuttons() {
-                document.getElementById("editBtn").disabled = false;
-                document.getElementById("deleteBtn").disabled = false;
+            // funcion: habilitar  los botones de edición y eliminación
+            function enableButtons() {
+              document.getElementById("editBtn").disabled = false;
+              document.getElementById("deleteBtn").disabled = false;
+            }
+            // funcion: deshabilitar los botones de edición y eliminación
+            function disableButtons() {
+              document.getElementById("editBtn").disabled = true;
+              document.getElementById("deleteBtn").disabled = true;
             }
 
-            //Funcion para desabilitar lo botones de Edita y Eliminar 
-            function disablebuttons() {
-                document.getElementById("editBtn").disabled = false;
-                document.getElementById("deleteBtn").disabled = false;
-            }
-
-            //Funcion : Cmbiar acción del formulario y confirmar la eliminacion
+            // funcion: cambiar accion del formulario y confirmar la eliminación
             function setActionAndSubmit(action, confirmMessage) {
-                if (confirmMessage) {
-                    if (!confiirm(confirmMessage)) {
+                if(confirmMessage){
+                    if (!confirm(confirmMessage)) {
                         return;
                     }
                 }
-                document.getElementById("actionImput").value = action;
+                document.getElementById("actionInput").value = action;
                 document.getElementById("userForm").submit();
             }
         </script>
-
     </head>
     <body onload="<%= (session.getAttribute("searchedUser") != null) ? "enableButtons()" : "disableButtons()" %>">
         <h1>Buscar, Editar o Eliminar Usuario</h1>
 
-        <%-- Mensaje de error o éxito --%>
-        <%if (request.getAttribute("errorMessage") != null) {%>
-            <p style="color: red;"><%= request.getAttribute("errorMessage") %></p>
+        <%-- Mensaje de error o de éxito --%>
+        <% if (request.getAttribute("errorMessage") != null) { %>
+            <p style="color:red"><%= request.getAttribute("errorMessage") %></p>
+        <% } else if (request.getAttribute("successMessage") != null) { %>
+            <p style="color:green"><%= request.getAttribute("successMessage") %></p>
         <% } %>
 
-        <%if (request.getAttribute("successMessage") != null) { %>
-            <p style="color: green;"><%= request.getAttribute("successMessage") %></p>
-        <% } %>
+        <%-- Formulario de búsqueda de usuario --%>
+        <form id="userForm" action="<%= request.getContextPath() %>/Controllers/UserController.jsp" method="post">
+           <%-- el valor cambiará según la acción realizada --%>
+            <input type="hidden" name="action" id="actionInput" value="search">
 
-        <%-- Formulario pra buscar editar y eliminra --%>
-        <from id="userForm" action = "<%= request.getContextPath() %>/Controllers/UserController.jsp" method="post">
-              <!-- El valor cambiará dinamicamente  -->
-              <input type="hidden" id="actionInput" name="action" value="search">
-              
-              <label for="searchCode">Código del usuario</label><br>
-              <input type="text" id="code" name="code" required value="
-                    <%= session.getAttribute("searchUser") != null ?
-                            ((User) session.getAttribute("searchUser")).getCode() 
-                    : "" %>">
-              <br><br>
+          
 
-        <%-- Detalles del usuario (despues de la búsqueda) --%>
-        <% User sessionUser = (User) session.getAttribute("searchedUser"); %>
+            <%-- Detalles del usuario (despues de la búsqueda) --%>
+            <% User sessionUser = (User) session.getAttribute("searchedUser"); %>
 
-        <%if (sessionUser != null) { %>
-            <h3>Detalles del Usuario</h3>
-            <p><strong>Codigo:</strong> <%= sessionUser.getCode() %></p>
-            <p><strong>Nombre:</strong> <%= sessionUser.getNombre() %></p>
-            <p><strong>email:</strong> <%= sessionUser.getEmail() %></p>
+            <% if (sessionUser != null) { %>
+                <h3>Detalles del Usuario</h3>
+                <p><strong>Código:</strong> <%= sessionUser.getId() %></p>
+                <p><strong>Nombre:</strong> <%= sessionUser.getName() %></p>
+                <p><strong>Apellido:</strong><%= sessionUser.getLast_name() %></p>
+                <p><strong>Email:</strong> <%= sessionUser.getEmail() %></p>
+                <p><strong>Teléfono:</strong> <%= sessionUser.getPhone() %></p>
+                <p><strong>Estado:</strong> <%= sessionUser.getStatus() %></p>
+                <p><strong>Creado en:</strong> <%= sessionUser.getCreated_at() %></p>
 
-            <label for="name">Nuevo Nombre:</label><br>
-            <input type="text" id="name" name="name" value="<%= sessionUser.getNombre() %>" required>
+                <label for="name">Nuevo Nombre:</label>
+                <input type="text" name="name" id="name" value="<%= sessionUser.getName() %>" required>
+                <br><br>       
+                  <label for="last_name">Nuevo Apellido:</label>
+                <input type="text" name="last_name" id="last_name" value="<%= sessionUser.getLast_name()%>" required>
+                <br><br>                    
+                <label for="password">Nueva Contraseña:</label>
+                <input type="password" name="password" id="password" required>
+                <br><br>
+                <label for="phone">Nuevo Teléfono:</label>
+                <input type="text" name="phone" id="phone" value="<%= sessionUser.getPhone() %>" required>
+                <br><br>
+                <label for="status">Nuevo Estado:</label>
+                <input type="text" name="status" id="status" value="<%= sessionUser.getStatus() %>" required>
+                <br><br>
+        
+            <% } else { %>
+                <p>No se ha encontrado ningún usuario con ese código.</p>
+            <% } %>
+
             <br>
-            <br>
-
-            <label for="email"> Nuevo Email</label><br>
-            <input type="email" id="email" name="email" value="<%= sessionUser.getEmail() %>" required>
-            <br>
-            <br>
-
-            <label for="password">Nueva Contraseña</label><br> 
-            <input type="password" id="password" name="password" required>
-        <% } elese { %>
-            <p>No se ha buscado ningún usuario aun o el usuario buscado no existe</p>
-        <% } %>
+            <%-- Botones en la misma línea --%>
+            <button type="submit" id="searchBtn"  onclick="setActionAndSubmit('search')">Buscar un Usuario</button>
+            <button type="button" id="editBtn" disabled onclick="setActionAndSubmit('update', '¿Está seguro de que desea editar este usuario?')">Editar Usuario</button>
+            <button type="button" id="deleteBtn" disabled onclick="setActionAndSubmit('delete', '¿Está seguro de que desea eliminar este usuario?')">Eliminar Usuario</button>
+        </form>
 
         <br>
-        
-        <%-- Botones en la misma fila --%>
-        <button type="submit" onclick="setActionAndSubmit('search')"
-                id="searchBtn">Buscar Usuario</button>
-        <button type="button" id="editBtn" disabled
-                 onclick="setActionAndSubmit('update', '¿Estás seguro de que quieres editar este usuario?')">
-                 Editar Usuario
-        </button>
-        <button type="button" id="deleteBtn" disabled
-                onabort="setActionAndSubmit('delete', '¿Estás seguro que quieres eliminar este usuario?')">
-                Eliminar Usuario
-        </button>
 
-    </form>
-
-    <br>
-    <a href="<%= requert.getConextPath() %>/index.jsp">MENU PRINCIPAL</a>
+        <a href="<%= request.getContextPath() %>/index.jsp">Menú Principal</a>
+       
     </body>
 </html>

@@ -4,63 +4,67 @@
     Author     : LUIS VEGA
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Domain.Model.User"%>
 <%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Lista de Usuarios</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lisa de usuarios</title>
     </head>
     <body>
-        <h1>Lisa de Todos los Usuarios</h1>
+        <h1>Lista de usuarios</h1>
 
-        <%-- Mesaje de error o éxito --%>
-        <%if (request.getAttribute("errorMessage") != null) {%>
-            <p style="color: red;"><%= request.getAttribute("errorMessage") %></p>
+        <%-- Mensaje de error o exito --%>
+        <% if (request.getAttribute("errorMessage") != null) { %>
+            <p style="color:red"><%= request.getAttribute("errorMessage") %></p>
+        <% } else if (request.getAttribute("successMessage") != null) { %>
+            <p style="color:green"><%= request.getAttribute("successMessage") %></p>
         <% } %>
 
-        <%if (request.getAttribute("successMessage") != null) { %>
-            <p style="color: green;"><%= request.getAttribute("successMessage") %></p>
-        <% }%>
-
-        <%-- Tabla para mostar la lista de usuarios --%>
+        <%-- Tabla para mostrar la lista de usuarios --%>
         <table border="1">
             <thead>
-            <tr>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
+                <tr>
+
+                    <th>Codigo</th>
+                    <th>Apellido</th>                 
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+             </thead>
             <tbody>
-            <% List<User> users = (List<users>) session.getAttribute("users"); %>
-            <% if (users != null && !users.isEmpty()) { %>
-                <% for (User user : users) { %>
+                <% List<User> users = (List<User>) request.getAttribute("users"); %>
+                <% if (users != null && !users.isEmpty()) { %>
+                    <% for (User user : users) { %>
+                        <tr>
+                            <td><%= user.getId() %></td>
+                            <td><%= user.getName() %></td>
+                            <td>
+                                <%-- Enlace mailto: para el cliente --%>
+                                <a href="mailto:?cc=<%= user.getEmail() %>&subject=Solicitud de cliente&body=Hola, quiero pedir un cliente para mi empresa">
+                                    <%= user.getEmail() %>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="UserController.jsp?action=search&id=<%= user.getId() %>">Buscar</a>
+                                <a href="UserController.jsp?action=deletefl&id=<%= user.getId() %>" onclick="return confirm('¿Está seguro de que desea eliminar este usuario?')">Eliminar</a>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
                     <tr>
-                        <td><%= user.getCode() %></td>
-                        <td><%= user.getNombre() %></td>
-                        <td>
-                            <%--Enlace mailto: para el cliente de correo--%>
-                            <a href="mailto:?cc= user.getEmail() %>&subject=Sludos de Luis Fernando Vega Rodríguez&body=Cordial saludo mi estimado">
-                                <%= user.getEmail() %>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="UserController.jsp?action=search&code=<%= user.getCode() %>">Editar</a>
-                            <a href="UserController.jsp?action=delete&code=<%= user.getCode() %>" onclick="return confirm('¿Estás seguro que quieres eliminar este usuario?')">Eliminar</a>
-                        </td>
+                        <td colspan="4">No hay usuarios registrados.</td>
                     </tr>
                 <% } %>
-            <% } else { %>
-                <tr>
-                    <td colspan="4">No hay usuarios registrados</td>
-                </tr>
-            <% } %>
+                
             </tbody>
         </table>
 
         <br>
-        <a href="<%= request.getConextPath() %>/Controllers/UserController.jsp?action=create">Agregar Nuevo Usuario</a>
-    </body> 
+
+        <a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=create">Crear nuevo usuario</a>
+
+    </body>
 </html>

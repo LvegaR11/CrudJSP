@@ -4,34 +4,39 @@
     Author     : LUIS VEGA
 --%>
 
-<%@page  contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language= "java" %>
-<%@ page import="Domain.Model.User"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Domain.Model.User"%>
 
+
+<!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset = UTF-8"
-        <title>Pagina de inicio</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Pagina de Inicio</title>
     </head>
     <body>
-        <h1>Bienvenido a la aplicación de gestión de usuarios</h1>
+        <h1>Bienvenido a la gestión de usuarios</h1>
 
-        <%-- Verificamos que el usuario ha iniciado sesión --%>
+        <%-- verificamos si el usuario está logueado --%>
         <% User loggedInUser = (User) session.getAttribute("loggedInUser"); %>
+        <% if (loggedInUser == null) { %>
+            <%-- si no está logueado, redirigimos al login --%>
+            <h3> No has iniciado Sesión</h3>
+            <a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=login">Iniciar Sesión</a>
+        <% } else { %>
+            <%-- si está logueado, redirigimos al perfil del usuario --%>
+            <h3> Bienvenido <%= loggedInUser.getName() %></h3>
             
-        <% if (loggedInUser == null) {%>
-        <%-- Si ha iniciado sesión, mostramos la opción login --%>
-        <h3>No has iniciado sesión</h3>
-        <a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=login">Iniciar sesión</a>
-        <%} else {%>
-        <%-- Si ha iniciado sesión, mostrar el menú de gestión de usuarios --%>
-        <h3>Bienvenido, <%=loggedInUser.getNombre()%>(Has iniciado sesión)</h3>
-        <ul>
-            <li><a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=showCreateForm">Agregar usuario</a></li>
-            <li><a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=showFindForm">Buscar usuario</a></li>
-            <li><a href="<%= request.getContextPath()%> /Controllers/UserController.jsp?action=listAll">Listar todos los usuarios</a></li>
+            <ul>
+                <%-- agregar usuarios --%>
+                <li><a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=showCreateForm">Agregar Usuario</a></li>
+                <%-- buscar usuarios --%>
+                <li><a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=showFindForm">Buscar Usuario</a></li>
+                <%-- listar usuarios --%>
+                <li><a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=listAll">Listar Usuarios</a></li>
             </ul>
             <br>
-            <a href="<%= request.getContextPath()%>/Controllers/UserController.jsp?action=logout">Cerrar sesión</a>
-            <% }%>
+            <a href="<%= request.getContextPath() %>/Controllers/UserController.jsp?action=logout">Cerrar Sesión</a>
+        <% } %>
     </body>
 </html>
