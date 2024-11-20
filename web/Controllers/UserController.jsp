@@ -250,7 +250,7 @@
 
             }
             
-            //Metodo para lsitar todos los usuarios
+            //Metodo para litar todos los usuarios
             private void handleListAllUsers(HttpServletRequest request, HttpServletResponse response, HttpSession session, UserService userService)
                     throws ServletException, IOException {
                  try {
