@@ -90,6 +90,7 @@
             <button type="submit" id="searchBtn"  onclick="setActionAndSubmit('search')">Buscar un Usuario</button>
             <button type="button" id="editBtn" disabled onclick="setActionAndSubmit('update', '¿Está seguro de que desea editar este usuario?')">Editar Usuario</button>
             <button type="button" id="deleteBtn" disabled onclick="setActionAndSubmit('delete', '¿Está seguro de que desea eliminar este usuario?')">Eliminar Usuario</button>
+            <button type="button" id="lstiVisitBtn" onclick="setActionAndSubmit('listVisit')">Listar Visitas</button>
         </form>
 
         <br>

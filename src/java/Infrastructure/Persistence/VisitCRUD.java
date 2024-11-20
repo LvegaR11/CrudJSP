@@ -73,12 +73,12 @@ public void updateVisit(Visit visit){
     }
 }
 
-public void deleteVisit(Visit visit){
+public void deleteVisit(int id){
     String query = "DELETE FROM visit WHERE id = ?";
     try{
         Connection connection = ConnectionDbMySql.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, visit.getId());
+        stmt.setInt(1, id);
         stmt.executeUpdate();
     }catch(Exception e){
         e.printStackTrace();

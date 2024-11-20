@@ -29,6 +29,15 @@ public class Visit {
         this.user_id = user_id;
     }
 
+    public Visit(String location, float duration, int number_of_persons, String visit_date, String user_id) {
+        this.location = location;
+        this.duration = duration;
+        this.number_of_persons = number_of_persons;
+        this.visit_date = visit_date;
+        this.user_id = user_id;
+    }
+    
+
     public int getId() {
         return id;
     }

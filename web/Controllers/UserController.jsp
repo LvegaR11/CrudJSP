@@ -6,6 +6,8 @@
 
 <%@ page import="java.util.List"%>
 <%@page import="Domain.Model.User"%>
+<%@page import="Domain.Model.Visit"%>
+<%@page import="Business.Services.VisitService"%>
 <%@page import ="java.sql.SQLException"%>
 <%@page import ="Business.Exceptions.DuplicateUserException"%>
 <%@page import ="java.io.IOException"%> <!-- IMPORTACION DE IOExecption -->
@@ -30,6 +32,9 @@
             break;
         case "authenticate":
             handleAuthenticate(request, response, session, userService);
+            break;
+        case "listVisit":
+            handleListVisit(request, response, session, userService);
             break;
         case "showCreateForm":
             showCreateUserForm(request, response);
@@ -67,6 +72,22 @@
 
 %>
 <%!
+    //Metodo para ir a la lista de visitas
+    private void handleListVisit(HttpServletRequest request, HttpServletResponse response, HttpSession session, UserService userService)
+            throws ServletException, IOException {
+        User user = (User) session.getAttribute("searchedUser");
+        if (user == null) {
+            request.setAttribute("errorMessage", "Primero debes buscar un usuario para ver sus visitas.");
+            request.getRequestDispatcher("/Views/Forms/Users/find_edit_delete.jsp").forward(request, response);
+            return;
+        }
+        String id = user.getId(); //Usamos el id del usuario buscado
+
+    
+        response.sendRedirect(request.getContextPath() + "/Controllers/VisitController.jsp?action=listAll&id=" + id);
+       
+    }
+
     //metodo para mostrar el formulario de login
     private void handleLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session)
             throws ServletException, IOException {

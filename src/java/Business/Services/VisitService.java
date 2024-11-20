@@ -48,7 +48,7 @@ public class VisitService {
     }
 
     //Metodo para eliminar una visita
-    public void deleteVisit(Visit visit) throws SQLException{
-        visitCRUD.deleteVisit(visit);
+    public void deleteVisit(int id) throws SQLException{
+        visitCRUD.deleteVisit(id);
     }
 }
